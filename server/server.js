@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
 app.post('/notes', (req, res) => {
     let [month, date, year] = parseDate(req.body.date);
     const newNote = new Note({
-        date: new Date(year, month, date),
+        date: new Date(year, month, date).toDateString(),
         title: req.body.title,
         body: req.body.body
     });
@@ -76,7 +76,7 @@ app.get('/notes/:date', (req, res) => {
         }
     }, e => {
         console.log('Finding result cause error', e);
-    })
+    });
 });
 
 app.listen(port, () => {
