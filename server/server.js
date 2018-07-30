@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const { mongoose } = require('./db/mongoose');
 const { Note } = require('./model/note');
 const { Query } = require('mongoose');
+const { ObjectID } = require('mongodb');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -24,6 +25,8 @@ var allowCrossDomain = function(req, res, next) {
 
 app.use(allowCrossDomain);
 
+app.set('view engine', 'hbs');
+
 function parseDate(data) {
     const datesData = data.split('-');
     // return array [month, date, year]
@@ -34,7 +37,10 @@ function parseDate(data) {
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.send('Calendar API App');
+    res.render('home.hbs', {
+        pageAuthor: 'Huy Cam',
+        pageTitle: 'Calendar Api'
+    });
 });
 
 app.post('/notes', (req, res) => {
@@ -67,15 +73,33 @@ app.get('/notes/:date', (req, res) => {
     const [month, date, year] = parseDate(req.params.date);
 
     Note.find({
-        date: new Date(year, month, date)
+        date: new Date(year, month, date).toDateString()
     }).then(doc => {
         if (doc.length === 0) {
-            res.status(404).send('Not Found');
+            res.status(404).send('Not Found' + `${example}`);
         } else {
             res.send(doc);
         }
     }, e => {
         console.log('Finding result cause error', e);
+    });
+});
+
+app.delete('/notes/:id', (req, res) => {
+    const id = req.params.id;
+
+    if (!ObjectID.isValid(id)) {
+        res.status(404).send('Invalid Id');
+    }
+
+    Note.findByIdAndRemove(id).then((doc) => {
+        if (!doc) {
+            res.status(404).send('Id not found');
+        }
+
+        res.send(doc);
+    }, (err) => {
+        res.status(404).send(err);
     });
 });
 

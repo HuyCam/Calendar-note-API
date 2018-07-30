@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>{{ pageTitle }}</h1>
+    <h3>{{ pageAuthor }}</h3>
+    <h2>Instruction</h2>
+    <h3>Get all recent notes</h3>
+    <p>Address + /notes
+        </br>
+        Example: localhost:3000/notes
+    </p>
+    <h3>Get all notes of a specific date</h3>
+    <p>Address + /notes/:month-date-year
+        </br>
+        Example: localhost:3000/notes/07-23-2018</p>
+    <h3>Post a note</h3>
+    <p>Address + /notes
+        </br>
+        Example of a note in json format
+        {
+        "title": "Coding 123",
+        "date": "30-06-2018",
+        "body": "Finish Calendar API"
+        }
+    </p>
+</body>
+</html>
