@@ -7,11 +7,11 @@ const { Query } = require('mongoose');
 const { ObjectID } = require('mongodb');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
     // intercept OPTIONS method
@@ -86,7 +86,7 @@ app.get('/notes/:date', (req, res) => {
 });
 
 app.patch('/notes/:id', async (req, res) => {
-
+    console.log(req.body);
     try {
         const note = await Note.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true});
 
