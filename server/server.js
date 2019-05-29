@@ -85,6 +85,21 @@ app.get('/notes/:date', (req, res) => {
     });
 });
 
+app.patch('/notes/:id', async (req, res) => {
+
+    try {
+        const note = await Note.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true});
+
+        if (!note) {
+            res.status(404).send();
+        }
+        res.send(note);
+    } catch(e) {
+        res.status(400).send();
+    }
+    
+})
+
 app.delete('/notes/:id', (req, res) => {
     const id = req.params.id;
 
